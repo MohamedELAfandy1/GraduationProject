@@ -39,7 +39,8 @@ app.use((err, req, res, next) => {
     },
   });
 });
+const PORT = process.env.PORT || 2000;
 
 app.listen(process.env.PORT, () => {
-  console.log(`Connected On ${process.env.PORT}`);
+  console.log(`Connected On ${PORT}`);
 });
