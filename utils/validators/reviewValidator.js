@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const validatorMiddleware = require("../../Middleware/validatorMiddleware");
+const validatorMiddleware = require("../../middleware/validatorMiddleware");
 const reviewModel = require("../../models/reviewModel");
 const userModel = require("../../models/userModel");
 
