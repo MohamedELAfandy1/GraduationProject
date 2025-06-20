@@ -1,0 +1,13 @@
+/node_modules
+.env
+/scripts2
+/temp
+/tests
+/data
+/Notes
+
+/utils/cryptoKeys.js
+/utils/tags.py
+/utils/review.py
+/utils/input.json
+/config/redisWithNores.js
