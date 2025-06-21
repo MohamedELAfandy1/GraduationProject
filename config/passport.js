@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const callbackURL =
   process.env.NODE_ENV === "production"
-    ? "https://graduationproject-production-01b7.up.railway.app/auth/google/callback"
+    ? "https://graduationproject-production-ebf4.up.railway.app/auth/google/callback"
     : "http://localhost:3000/auth/google/callback";
 
 passport.use(
