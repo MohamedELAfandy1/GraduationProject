@@ -3,6 +3,9 @@ const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const passport = require("passport");
 const hpp = require("hpp");
+const cors = require("cors");
+const compression = require("compression");
+
 const mountRoutes  = require("./routes/indexRoute");
 
 require("dotenv").config();
@@ -11,6 +14,9 @@ require("./config/passport");
 const swaggerSpec = require("./config/swagger"); // Adjust path
 
 const app = express();
+
+app.use(cors());
+app.use(compression());
 
 app.use(express.json({ limit: 2 * 1024 * 1024 }));
 app.use(express.urlencoded({ extended: true, limit: 2 * 1024 * 1024 }));
