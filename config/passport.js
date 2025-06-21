@@ -3,13 +3,20 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userModel = require("../models/userModel");
 const { accessToken, refreshToken } = require("../utils/tokens");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
+console.log("📦 CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
+console.log("📦 CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
+const callbackURL =
+  process.env.NODE_ENV === "production"
+    ? "https://graduationproject-production-ebf4.up.railway.app/auth/google/callback"
+    : "http://localhost:3000/auth/google/callback";
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL,
     },
     async (accessToken, refreshTokenGoogle, profile, done) => {
       try {
@@ -21,7 +28,7 @@ passport.use(
         const newUser = await userModel.create({
           name: profile.displayName,
           email: profile.emails[0].value,
-          password: await bcrypt.hash(("@" + profile.id),12),
+          password: await bcrypt.hash("@" + profile.id, 12),
         });
 
         done(null, newUser);
