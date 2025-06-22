@@ -27,6 +27,10 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, "uploads")));
 
 mountRoutes(app);
+app.get("/", (req, res) => {
+  res.send("Server is running...");
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
@@ -47,6 +51,6 @@ app.use((err, req, res, next) => {
 });
 const PORT = process.env.PORT || 3000;
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log(`Connected On ${PORT}`);
 });

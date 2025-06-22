@@ -53,6 +53,7 @@ async function getRecommendationsForUser(userId) {
     });
 
     python.on("close", (code) => {
+      console.log("Python Finished", code);
       if (code !== 0) return reject(new Error("Python script failed"));
       try {
         const results = JSON.parse(data);
