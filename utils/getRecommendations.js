@@ -38,7 +38,7 @@ async function getRecommendationsForUser(userId) {
   };
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(__dirname, "../scripts/recommender5.py");
-    const python = spawn("python", [scriptPath]);
+    const python = spawn("python3", [scriptPath]);
 
     let data = "";
     python.stdin.write(JSON.stringify(input));
