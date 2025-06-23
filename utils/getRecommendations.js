@@ -49,7 +49,7 @@ async function getRecommendationsForUser(userId) {
     });
 
     python.stderr.on("data", (err) => {
-      console.error("Python error:", err.toString());
+      console.log("Python error:", err.toString());
     });
 
     python.on("close", (code) => {
