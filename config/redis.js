@@ -9,6 +9,7 @@ require("dotenv").config();
 // });  
 
 const client = new redis(process.env.REDIS_URL);
+console.log("🔍 REDIS_URL =", process.env.REDIS_URL);
 
 client.on("connect", () => console.error("Client Connected To Redis"));
 client.on("error", (err) => console.error("Redis Error", err));
