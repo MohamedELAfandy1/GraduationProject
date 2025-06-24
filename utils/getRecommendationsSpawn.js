@@ -1,11 +1,12 @@
-const axios = require("axios");
+const { spawn } = require("child_process");
+const path = require("path");
 const userModel = require("../models/userModel");
 const attractionModel = require("../models/attractionModel");
 
 async function getRecommendationsForUser(userId) {
   const user = await userModel.findById(userId);
   if (!user || !user.preferences)
-    throw new Error("User not found or missing preferences");
+    return new Error("User not found or missing preferences");
 
   const attractions = await attractionModel
     .find({ preferences: { $exists: true, $ne: null } })
@@ -35,17 +36,38 @@ async function getRecommendationsForUser(userId) {
     })),
     allUsers,
   };
+  return new Promise((resolve, reject) => {
+    const scriptPath = path.join(__dirname, "../scripts/recommender5.py");
+    const python = spawn("python3", [scriptPath]);
 
-  try {
-    const response = await axios.post("https://4e2ad561-bfcf-4f19-a88d-544cc6b27784-00-5ngbpvt422vj.spock.replit.dev/recommend", input); 
-    const results = response.data;
-    const sorted = results.sort((a, b) => b.score - a.score).slice(0, 10);
-    const ids = sorted.map((r) => r.attractionId);
-    return ids;
-  } catch (error) {
-    console.error("Recommendation API error:", error.message);
-    throw new Error("Failed to get recommendations");
-  }
+    let data = "";
+    python.stdin.write(JSON.stringify(input));
+    python.stdin.end();
+
+    python.stdout.on("data", (chunk) => {
+      data += chunk.toString();
+    });
+
+    python.stderr.on("data", (err) => {
+      console.log("Python error:", err.toString());
+    });
+
+    python.on("close", (code) => {
+      console.log("Python Finished", code);
+      if (code !== 0) return reject(new Error("Python script failed"));
+      try {
+        const results = JSON.parse(data);
+        const sorted = results.sort((a, b) => b.score - a.score).slice(0, 10);
+        const ids = sorted.map((r) => r.attractionId);
+
+        // const results2 = JSON.parse(data);
+        // console.log(" Results from Python:", results2);
+
+        resolve(ids);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  });
 }
-
 module.exports = getRecommendationsForUser;
