@@ -1,16 +1,16 @@
 /**
  * @swagger
  * tags:
- *   name: Attractions
- *   description: Endpoints to manage tourist attractions
+ *   name: attraction
+ *   description: Endpoints to manage tourist attraction
  */
 
 /**
  * @swagger
- * /attractions:
+ * /attraction:
  *   get:
- *     summary: Get all attractions with advanced filtering, sorting, field selection, and pagination
- *     tags: [Attractions]
+ *     summary: Get all attraction with advanced filtering, sorting, field selection, and pagination
+ *     tags: [attraction]
  *     parameters:
  *       - in: query
  *         name: keyword
@@ -39,7 +39,7 @@
  *         description: Number of results per page
  *     responses:
  *       200:
- *         description: A list of attractions
+ *         description: A list of attraction
  *         content:
  *           application/json:
  *             schema:
@@ -67,10 +67,10 @@
 
 /**
  * @swagger
- * /category/{id}/attractions:
+ * /category/{id}/attraction:
  *   get:
- *     summary: Get all attractions for a specific category
- *     tags: [Attractions]
+ *     summary: Get all attraction for a specific category
+ *     tags: [attraction]
  *     parameters:
  *       - in: path
  *         name: id
@@ -80,7 +80,7 @@
  *         description: MongoDB ObjectId of the category
  *     responses:
  *       200:
- *         description: Attractions retrieved successfully
+ *         description: attraction retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -99,10 +99,10 @@
 
 /**
  * @swagger
- * /category/{id}/attractions:
+ * /category/{id}/attraction:
  *   get:
- *     summary: Get all attractions for specefic category
- *     tags: [Attractions]
+ *     summary: Get all attraction for specefic category
+ *     tags: [attraction]
  *     parameters:
  *       - in: path
  *         name: id
@@ -112,7 +112,7 @@
  *         description: MongoDB ObjectId of the category
  *     responses:
  *       200:
- *         description: Attractions retrieved successfully
+ *         description: attraction retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -126,10 +126,10 @@
 
 /**
  * @swagger
- * /attractions:
+ * /attraction:
  *   post:
  *     summary: Create a new attraction
- *     tags: [Attractions]
+ *     tags: [attraction]
  *     requestBody:
  *       required: true
  *       content:
@@ -151,10 +151,10 @@
 
 /**
  * @swagger
- * /attractions/{id}:
+ * /attraction/{id}:
  *   put:
  *     summary: Update an existing attraction
- *     tags: [Attractions]
+ *     tags: [attraction]
  *     parameters:
  *       - in: path
  *         name: id
@@ -184,10 +184,10 @@
 
 /**
  * @swagger
- * /attractions/{id}:
+ * /attraction/{id}:
  *   delete:
  *     summary: Delete an attraction
- *     tags: [Attractions]
+ *     tags: [attraction]
  *     parameters:
  *       - in: path
  *         name: id

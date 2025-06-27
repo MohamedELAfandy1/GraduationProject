@@ -3,7 +3,7 @@
 
   const accessToken = (userId) => {
     return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "5y",
+      expiresIn: "5m",
     });
   };
 

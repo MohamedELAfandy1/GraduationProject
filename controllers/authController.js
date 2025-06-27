@@ -9,7 +9,6 @@ const sendEmail = require("../utils/sendEmail");
 const redisClient = require("../config/redis");
 const passport = require("passport");
 
-
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -18,7 +17,7 @@ exports.register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const userData = { name, email, password: hashedPassword };
-    await redisClient.set(email, JSON.stringify({ otp, userData }), 'EX', 300);
+    await redisClient.set(email, JSON.stringify({ otp, userData }), "EX", 300);
 
     await sendEmail({
       email: email,
@@ -49,7 +48,6 @@ exports.verifyUser = async (req, res, next) => {
     if (!redisData) return res.status(400).json({ message: "OTP expired" });
 
     const parsedData = JSON.parse(redisData);
-
     if (parsedData.otp != otp)
       return res.status(400).json({ message: "Wrong OTP" });
 
@@ -139,6 +137,48 @@ exports.auth = async (req, res, next) => {
   }
 };
 
+exports.auth2 = async (req, res, next) => {
+  try {
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    if (!token) {
+      return next();
+    }
+
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    if (!decoded || !decoded.userId) {
+      return next();
+    }
+
+    const currentUser = await userModel.findById(decoded.userId);
+    if (!currentUser) {
+      return next();
+    }
+
+    if (currentUser.passwordChangedAt) {
+      const passwordChangedTimeStamp = parseInt(
+        currentUser.passwordChangedAt.getTime() / 1000,
+        10
+      );
+      if (passwordChangedTimeStamp > decoded.iat) {
+        return next(
+          new Error("User Recently Change His Password Please Login Again...")
+        );
+      }
+    }
+
+    req.user = currentUser;
+    next();
+  } catch (err) {
+    return next(new Error("Invalid or expired token"));
+  }
+};
+
 exports.allowedTo =
   (...roles) =>
   async (req, res, next) => {
@@ -148,6 +188,7 @@ exports.allowedTo =
     next();
   };
 
+//Send Automatic every 5 min
 exports.refresh = async (req, res, next) => {
   try {
     const { userId } = req.body;

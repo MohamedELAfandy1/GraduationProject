@@ -20,7 +20,7 @@ const {
   toggleLikeAttraction,
 } = require("../controllers/attractionController.js");
 
-const { auth, allowedTo } = require("../controllers/authController.js");
+const { auth, auth2, allowedTo } = require("../controllers/authController.js");
 
 const router = express.Router({ mergeParams: true });
 router
@@ -38,7 +38,7 @@ router
 
 router
   .route("/:id")
-  .get(auth, getAttractionValidator, getAttracion)
+  .get(auth2, getAttractionValidator, getAttracion)
   .put(
     auth,
     allowedTo("admin"),

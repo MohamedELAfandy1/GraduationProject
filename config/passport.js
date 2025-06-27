@@ -1,11 +1,9 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userModel = require("../models/userModel");
-const { accessToken, refreshToken } = require("../utils/tokens");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
-console.log("📦 CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-console.log("📦 CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
+
 const callbackURL =
   process.env.NODE_ENV === "production"
     ? "https://graduationproject-production-ebf4.up.railway.app/auth/google/callback"

@@ -54,22 +54,24 @@ exports.getOne = (Model, populationOption) =>
 
 exports.getAll = (Model) =>
   asyncHandler(async (req, res) => {
-    const ApiFeatures = new apiFeatures(Model.find(), req.query)
-      .filter()
-      .search();
+    const features = new apiFeatures(Model.find(), req.query);
+
+    await features.filter(); // ← لازم await هنا لأنها async
+    features.search();
 
     if (req.filterObject) {
-      ApiFeatures.modelFind = ApiFeatures.modelFind.find(req.filterObject);
+      features.modelFind = features.modelFind.find(req.filterObject);
     }
 
-    await ApiFeatures.paginate();
+    await features.paginate();
+    features.limitFields().sort();
 
-    ApiFeatures.limitFields().sort();
+    const { modelFind, paginationResult } = features;
+    const documents = await modelFind;
 
-    const { modelFind, paginationResult } = ApiFeatures;
-
-    const documents = await ApiFeatures.modelFind;
-    res
-      .status(200)
-      .json({ length: documents.length, paginationResult, data: documents });
+    res.status(200).json({
+      length: features.length,
+      paginationResult,
+      data: documents,
+    });
   });

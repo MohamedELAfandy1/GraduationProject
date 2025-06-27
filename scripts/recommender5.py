@@ -13,7 +13,7 @@ from nltk.tokenize import word_tokenize
 # -----------------------
 arabic_stopwords = set([
     'في', 'من', 'على', 'و', 'عن', 'إلى', 'ما', 'لا', 'لم', 'لن', 'هو', 'هي', 'أن', 'إن', 'كان', 'كانت',
-    'هذا', 'هذه', 'ذلك', 'لكن', 'قد', 'كما', 'مع', 'أو', 'ثم', 'أي', 'أيضًا', 'بعد', 'قبل', 'بين'
+    'هذا', 'هذه', 'ذلك', 'لكن', 'قد', 'كما', 'مع', 'أو', 'ثم', 'أي', 'أيضا', 'بعد', 'قبل', 'بين'
 ])
 
 stemmer = ISRIStemmer()
@@ -36,7 +36,7 @@ parsed = json.loads(input_data)
 
 user_prefs = parsed.get("userPreferences")
 attractions = parsed.get("attractions", [])
-all_users = parsed.get("allUsers", [])  # المستخدمين الآخرين للتوصية التعاونية
+all_users = parsed.get("allUsers", [])  
 
 if not attractions or not user_prefs:
     print(json.dumps([]))

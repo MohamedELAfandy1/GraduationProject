@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
+    "start2": "nodemon server.js",
     "install-python-deps": "pip install -r backend/requirements.txt"
   },
   "keywords": [],
@@ -23,6 +24,7 @@
     "express-bouncer": "^0.2.0",
     "express-validator": "^7.2.1",
     "franc": "^6.2.0",
+    "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",

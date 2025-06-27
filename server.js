@@ -5,6 +5,7 @@ const passport = require("passport");
 const hpp = require("hpp");
 const cors = require("cors");
 const compression = require("compression");
+const helmet = require('helmet');
 
 const mountRoutes  = require("./routes/indexRoute");
 
@@ -14,6 +15,7 @@ require("./config/passport");
 const swaggerSpec = require("./config/swagger"); // Adjust path
 
 const app = express();
+app.use(helmet())
 
 app.use(cors());
 app.use(compression());

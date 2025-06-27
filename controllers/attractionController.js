@@ -71,7 +71,6 @@ exports.getAttractions = factory.getAll(attractionModel);
 exports.getAttracion = asyncHandler(async (req, res, next) => {
   const attractionId = req.params.id;
   const userId = req.user?._id;
-
   const attraction = await attractionModel.findById(attractionId);
   if (!attraction) {
     return res.status(404).json({ message: "Attraction not found" });
@@ -87,7 +86,8 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const isViewedToday = lastViewed && new Date(lastViewed).getTime() >= today.getTime();
+    const isViewedToday =
+      lastViewed && new Date(lastViewed).getTime() >= today.getTime();
 
     if (!isViewedToday) {
       //Update preferences (+0.2)
@@ -101,6 +101,7 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
 
       await user.save();
     }
+  } else {
   }
 
   res.status(200).json({

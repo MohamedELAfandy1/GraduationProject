@@ -10,13 +10,12 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000", 
+        url: ["http://localhost:3000", "https://graduationproject-production-ebf4.up.railway.app"],
       },
     ],
   },
-  apis: ["./routes/*.js","./swaggerDocs/*.js"], // Adjust path to your routes folder
+  apis: ["./routes/*.js", "./swaggerDocs/*.js"], // Adjust path to your routes folder
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 module.exports = swaggerSpec;
-

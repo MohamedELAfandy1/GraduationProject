@@ -65,12 +65,12 @@ class apiFeatures {
   }
   async paginate() {
     const allProductsCount = await this.modelFind.clone().countDocuments(); // Use clone() to reuse query
-
     const page = Math.max(1, parseInt(this.reqQuery.page) || 1);
     const limit = Math.max(1, parseInt(this.reqQuery.limit) || 20);
     const skip = (page - 1) * limit;
 
     let pagination = {};
+    this.length = allProductsCount;
     pagination.currentPage = +page;
     pagination.limit = +limit;
     pagination.numberOfPages = Math.ceil(allProductsCount / limit);
