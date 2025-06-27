@@ -38,8 +38,8 @@ exports.register = async (req, res, next) => {
 
 exports.verifyUser = async (req, res, next) => {
   try {
-    const { otp } = req.body;
-    const email = req.headers["x-user-email"];
+    const { otp, email } = req.body;
+    // const email = req.headers["x-user-email"];
 
     if (!email || !otp)
       return res.status(400).json({ message: "Missing OTP or email" });
