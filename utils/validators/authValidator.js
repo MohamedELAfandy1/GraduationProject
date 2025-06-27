@@ -51,7 +51,7 @@ exports.loginValidator = [
 exports.verfiyResetPasswordValidator = [
   check("passwordResetCode")
     .notEmpty()
-    .withMessage("Email Is Required")
+    .withMessage("OTP Is Required")
     .isString()
     .withMessage("Should Be In String Format"),
 

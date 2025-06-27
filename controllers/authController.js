@@ -86,8 +86,9 @@ exports.login = async (req, res, next) => {
     const at = accessToken(user._id);
     await refreshToken(user._id);
     const { password: _p, ...safeUser } = user.toObject();
-
-    res.status(200).json({ token: at, ...safeUser });
+   data = {...safeUser} 
+   
+   res.status(200).json({ token: at, data});
   } catch (err) {
     next(err);
   }
