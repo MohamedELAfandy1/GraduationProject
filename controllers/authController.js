@@ -97,7 +97,7 @@ exports.login = async (req, res, next) => {
 exports.auth = async (req, res, next) => {
   try {
     let token;
-    console.log(token);
+    console.log(req.headers.Authorization);
     if (
       req.headers.Authorization &&
       req.headers.Authorization.startsWith("Bearer")
