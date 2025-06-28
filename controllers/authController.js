@@ -86,9 +86,9 @@ exports.login = async (req, res, next) => {
     const at = accessToken(user._id);
     await refreshToken(user._id);
     const { password: _p, ...safeUser } = user.toObject();
-   data = {...safeUser} 
-   
-   res.status(200).json({ token: at, data});
+    data = { ...safeUser };
+
+    res.status(200).json({ token: at, data });
   } catch (err) {
     next(err);
   }
@@ -97,11 +97,12 @@ exports.login = async (req, res, next) => {
 exports.auth = async (req, res, next) => {
   try {
     let token;
+    console.log(token);
     if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
+      req.headers.Authorization &&
+      req.headers.Authorization.startsWith("Bearer")
     ) {
-      token = req.headers.authorization.split(" ")[1];
+      token = req.headers.Authorization.split(" ")[1];
     }
     if (!token) {
       return next(new Error("You are Not Logging In"));
