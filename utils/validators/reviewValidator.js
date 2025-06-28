@@ -8,7 +8,7 @@ exports.createReviewValidator = [
     .optional()
     .isLength({ min: 1 })
     .withMessage("Too Short Review Name")
-    .isLength({ max: 32 })
+    .isLength({ max: 320000 })
     .withMessage("Too Long Review Name"),
   check("ratings")
     .notEmpty()
