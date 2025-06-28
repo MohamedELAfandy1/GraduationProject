@@ -24,7 +24,12 @@ router.post("/register", registerValidator, register);
 
 router.post("/verify", verifyUser);
 
-router.post("/login", bouncer.block, loginValidator, login);
+router.post(
+  "/login",
+  //  bouncer.block,
+  loginValidator,
+  login
+);
 
 router.post("/refresh", refresh);
 
