@@ -60,15 +60,14 @@ exports.updateUserValidator = [
     .optional()
     .isEmail()
     .withMessage("Invalid Email Address")
-    .custom(async (value, { req }) => {
-      const user = await userModel.findOne({ email: value });
+    .custom((value) =>
+      userModel.findOne({ email: value }).then((user) => {
+        if (user) {
+          return Promise.reject(new Error("Email Already Used"));
+        }
+      })
+    ),
 
-      if (user && user.email !== req.user.email) {
-        throw new Error("Email Already Used");
-      }
-
-      return true; 
-    }),
   check("phone")
     .optional()
     .isMobilePhone(["ar-EG", "ar-SA"])
@@ -121,13 +120,14 @@ exports.updateLoggedUserValidator = [
     .optional()
     .isEmail()
     .withMessage("Invalid Email Address")
-    .custom((value) =>
-      userModel.findOne({ email: value }).then((user) => {
-        if (user) {
-          return Promise.reject(new Error("Email Already Used"));
-        }
-      })
-    ),
+    .custom(async (value, { req }) => {
+      const user = await userModel.findOne({ email: value });
+      if (user && user.email !== req.user.email) {
+        throw new Error("Email Already Used");
+      }
+
+      return true;
+    }),
 
   check("phone")
     .optional()
