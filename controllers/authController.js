@@ -97,12 +97,12 @@ exports.login = async (req, res, next) => {
 exports.auth = async (req, res, next) => {
   try {
     let token;
-    console.log(req.headers.Authorization);
+    console.log(req.headers.authorization);
     if (
-      req.headers.Authorization &&
-      req.headers.Authorization.startsWith("Bearer")
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
     ) {
-      token = req.headers.Authorization.split(" ")[1];
+      token = req.headers.authorization.split(" ")[1];
     }
     if (!token) {
       return next(new Error("You are Not Logging In"));
