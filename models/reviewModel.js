@@ -31,7 +31,7 @@ const reviewSchema = new mongoose.Schema(
 );
 
 reviewSchema.index({ attraction: 1 });
-reviewSchema.index({ attraction: 1, user: 1 }, { unique: true });
+// reviewSchema.index({ attraction: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
   this.populate([{ path: "user", select: "name" }]);
