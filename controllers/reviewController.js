@@ -77,7 +77,7 @@ exports.createReview = asyncHandler(async (req, res, next) => {
 exports.getReviews = factory.getAll(reviewModel);
 
 exports.getReview = factory.getOne(reviewModel);
-
+//
 exports.updateReview = asyncHandler(async (req, res, next) => {
   const reviewId = req.params.id;
   const { ratings: newRating, title: newTitle } = req.body;
