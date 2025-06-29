@@ -24,15 +24,7 @@ const reviewSchema = new mongoose.Schema(
       ref: "attraction",
       required: [true, "Review Must Belong To Attraction"],
     },
-    //   isReported: {
-    //     type: Boolean,
-    //     default: false,
-    //   },
-    //   reportReason: {
-    //     type: String,
-    //     trim: true,
-    //     maxlength: 500,
-    //   },
+
   },
 
   { timestamps: true }

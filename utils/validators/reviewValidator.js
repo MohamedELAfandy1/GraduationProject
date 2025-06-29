@@ -20,20 +20,20 @@ exports.createReviewValidator = [
     .notEmpty()
     .withMessage("attraction Is Required")
     .isMongoId()
-    .withMessage("Invalid attraction ID Format")
-    .custom((val, { req }) =>
-      reviewModel
-        .findOne({ user: req.user._id, attraction: req.body.attraction })
-        .then((review) => {
-          if (review) {
-            return Promise.reject(
-              new Error(
-                "You Already Created A Review For This attraction Before"
-              )
-            );
-          }
-        })
-    ),
+    .withMessage("Invalid attraction ID Format"),
+    // .custom((val, { req }) =>
+    //   reviewModel
+    //     .findOne({ user: req.user._id, attraction: req.body.attraction })
+    //     .then((review) => {
+    //       if (review) {
+    //         return Promise.reject(
+    //           new Error(
+    //             "You Already Created A Review For This attraction Before"
+    //           )
+    //         );
+    //       }
+    //     })
+    // ),
 
   validatorMiddleware,
 ];
