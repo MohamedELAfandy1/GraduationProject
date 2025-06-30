@@ -72,13 +72,16 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
   const attractionId = req.params.id;
   const userId = req.user?._id;
   const attraction = await attractionModel.findById(attractionId);
+  let isLiked;
   if (!attraction) {
     return res.status(404).json({ message: "Attraction not found" });
   }
 
   if (userId) {
     const user = await userModel.findById(userId);
-
+    isLiked = user.likedAttractions.some(
+      (id) => id.toString() === attractionId.toString()
+    );
     // Get last viewed date for this attraction
     const lastViewed = user.lastViewedAttractions?.get(attractionId.toString());
 
@@ -107,6 +110,7 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     message: "Attraction details fetched",
     data: attraction,
+    isLiked,
   });
 });
 
