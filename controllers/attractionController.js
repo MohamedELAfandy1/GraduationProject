@@ -81,8 +81,7 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
     const user = await userModel.findById(userId);
     isLiked = user.likedAttractions.some(
       (id) => id.toString() === attractionId.toString()
-    );
-    // Get last viewed date for this attraction
+    ); // Get last viewed date for this attraction
     const lastViewed = user.lastViewedAttractions?.get(attractionId.toString());
 
     // Get today's date at 00:00

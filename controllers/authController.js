@@ -95,7 +95,7 @@ exports.login = async (req, res, next) => {
     const { password: _p, ...safeUser } = user.toObject();
     data = { ...safeUser };
 
-    res.status(200).json({ token: at, data, code: 400 });
+    res.status(200).json({ token: at, data, code: 200 });
   } catch (err) {
     next(err);
   }
