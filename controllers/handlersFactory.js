@@ -47,7 +47,7 @@ exports.getOne = (Model, populationOption) =>
     if (populationOption) {
       query.populate(populationOption);
     }
-    let document = await query.select("-__v -password -role").exec();
+    let document = await query.select("-__v -password").exec();
     if (!document) return next(new apiError("No document For This Id", 404));
     res.status(200).json({ data: document });
   });
