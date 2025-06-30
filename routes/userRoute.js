@@ -13,6 +13,7 @@ const {
   updateLoggedUserPassword,
   updateLoggedUserData,
   deactiveLoggedUser,
+  getFavourites,
 } = require("../controllers/userController.js");
 
 const {
@@ -30,6 +31,7 @@ const { auth, allowedTo } = require("../controllers/authController.js");
 const router = express.Router();
 
 router.get("/getMe", auth, getLoggedUserData, getUserById);
+router.get("/favourites", auth, getFavourites);
 router.put(
   "/updateMe",
   auth,

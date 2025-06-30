@@ -21,8 +21,15 @@ app.use(helmet({
 app.use(cors({
   origin: "*", // السماح لكل الدومينات
 }));
-app.use(compression());
+
+
+
+
 // app.use('/user', cors(), express.static(path.join(__dirname, 'uploads/user')));
+
+
+app.use(compression());
+
 
 app.use(express.json({ limit: 2 * 1024 * 1024 }));
 app.use(express.urlencoded({ extended: true, limit: 2 * 1024 * 1024 }));

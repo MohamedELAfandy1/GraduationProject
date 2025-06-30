@@ -56,7 +56,7 @@ exports.getAll = (Model) =>
   asyncHandler(async (req, res) => {
     const features = new apiFeatures(Model.find(), req.query);
 
-    await features.filter(); // ← لازم await هنا لأنها async
+    await features.filter();
     features.search();
 
     if (req.filterObject) {

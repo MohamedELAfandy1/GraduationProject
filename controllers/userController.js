@@ -127,3 +127,23 @@ exports.deactiveLoggedUser = asyncHandler(async (req, res, next) => {
   await userModel.findByIdAndUpdate(req.user._id, { active: false });
   res.status(204).json({ status: "Success" });
 });
+
+[exports.getFavourites = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+
+  const user = await userModel
+    .findById(userId)
+    .select("likedAttractions")
+    .populate({
+      path: "likedAttractions",
+      select:
+        "name category image ratings governorate district imageCover images ratingsAverage ratingsQuantity",
+    });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found", code: 404 });
+  }
+
+  res.status(200).json({ data: user.likedAttractions });
+});
+]

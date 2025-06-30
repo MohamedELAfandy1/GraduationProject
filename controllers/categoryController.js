@@ -23,12 +23,9 @@ exports.resizeCategoryImage = asyncHandler(async (req, res, next) => {
   next();
 });
 
+
 exports.createCategory = factory.createOne(CategoryModel,["name","description","image"]);
-
 exports.getCategories = factory.getAll(CategoryModel);
-
 exports.getCategory = factory.getOne(CategoryModel);
-
 exports.updateCategory = factory.updateOne(CategoryModel,["name","description","image"]);
-
 exports.deleteCategory = factory.deleteOne(CategoryModel);
