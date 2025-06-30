@@ -42,14 +42,17 @@ exports.verifyUser = async (req, res, next) => {
     // const email = req.headers["x-user-email"];
 
     if (!email || !otp)
-      return res.status(400).json({ message: "Missing OTP or email" });
+      return res
+        .status(400)
+        .json({ message: "Missing OTP or email", code: 4000 });
 
     const redisData = await redisClient.get(email);
-    if (!redisData) return res.status(400).json({ message: "OTP expired" });
+    if (!redisData)
+      return res.status(400).json({ message: "OTP expired", code: 400 });
 
     const parsedData = JSON.parse(redisData);
     if (parsedData.otp != otp)
-      return res.status(400).json({ message: "Wrong OTP" });
+      return res.status(400).json({ message: "Wrong OTP", code: 400 });
 
     const userData = parsedData.userData;
     const user = await userModel.create(userData);
@@ -60,7 +63,7 @@ exports.verifyUser = async (req, res, next) => {
     await redisClient.del(email);
     const { password, ...safeUser } = user.toObject();
 
-    res.status(201).json({ data: safeUser, token });
+    res.status(201).json({ data: safeUser, token, code: 201 });
   } catch (error) {
     next(error);
   }
@@ -72,7 +75,9 @@ exports.login = async (req, res, next) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res
+        .status(400)
+        .json({ message: "Invalid email or password", code: 400 });
     }
 
     let isMatched = await bcrypt.compare(
@@ -80,7 +85,9 @@ exports.login = async (req, res, next) => {
       String(user.password)
     );
     if (!isMatched) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res
+        .status(400)
+        .json({ message: "Invalid email or password", code: 400 });
     }
 
     const at = accessToken(user._id);
@@ -88,7 +95,7 @@ exports.login = async (req, res, next) => {
     const { password: _p, ...safeUser } = user.toObject();
     data = { ...safeUser };
 
-    res.status(200).json({ token: at, data });
+    res.status(200).json({ token: at, data, code: 400 });
   } catch (err) {
     next(err);
   }
@@ -196,14 +203,16 @@ exports.refresh = async (req, res, next) => {
   try {
     const { userId } = req.body;
     if (!userId) {
-      return res.status(400).json({ message: "User ID is required" });
+      return res
+        .status(400)
+        .json({ message: "User ID is required", code: 400 });
     }
 
     const storedToken = await redisClient.get(userId);
     if (!storedToken) {
       return res
         .status(401)
-        .json({ message: "Unauthorized: No refresh token found" });
+        .json({ message: "Unauthorized: No refresh token found", code: 401 });
     }
 
     const { rt } = JSON.parse(storedToken);
@@ -211,30 +220,31 @@ exports.refresh = async (req, res, next) => {
     if (!decoded || decoded.userId !== userId) {
       return res
         .status(403)
-        .json({ message: "Invalid or expired refresh token" });
+        .json({ message: "Invalid or expired refresh token", code: 403 });
     }
 
     const newAccessToken = accessToken(decoded.userId);
-    res.status(200).json({ accessToken: newAccessToken });
+    res.status(200).json({ accessToken: newAccessToken, code: 200 });
   } catch (err) {
     console.error("Refresh Token Error:", err);
     return res
       .status(403)
-      .json({ message: "Invalid or expired refresh token" });
+      .json({ message: "Invalid or expired refresh token", code: 403 });
   }
 };
 
 exports.logout = async (req, res, next) => {
   try {
     const { currentAccessToken } = req.body;
-    if (!currentAccessToken) return res.status(400).json("You Are Not Log In");
+    if (!currentAccessToken)
+      return res.status(400).json({ message: "You Are Not Log In", code: 400 });
 
     const decoded = jwt.verify(
       currentAccessToken,
       process.env.ACCESS_TOKEN_SECRET
     );
     if (!decoded?.userId) {
-      return res.status(400).json({ message: "Invalid token" });
+      return res.status(400).json({ message: "Invalid token", code: 400 });
     }
     await redisClient.del(decoded.userId.toString());
     res.status(204).send();
@@ -277,9 +287,11 @@ exports.forgetPassword = async (req, res, next) => {
     await user.save();
     return next(new Error("There Is An Error In Sending Email"));
   }
-  res
-    .status(200)
-    .json({ status: "SUCCESS", message: "Reset Code Sent To Email " });
+  res.status(200).json({
+    status: "SUCCESS",
+    message: "Reset Code Sent To Email ",
+    code: 200,
+  });
 };
 
 exports.verifyPasswordResetCode = async (req, res, next) => {
@@ -300,7 +312,7 @@ exports.verifyPasswordResetCode = async (req, res, next) => {
 
     user.passwordResetVerified = true;
     await user.save();
-    res.status(200).json({ status: "Success" });
+    res.status(200).json({ status: "Success", code: 200 });
   } catch (err) {
     next(err);
   }
@@ -326,7 +338,7 @@ exports.resetPassword = async (req, res, next) => {
 
     const token = accessToken(user._id);
     await refreshToken(user._id);
-    res.status(200).json({ token });
+    res.status(200).json({ token, code: 200 });
   } catch (err) {
     next(err);
   }
@@ -347,6 +359,6 @@ exports.googleCallBack = [
     await refreshToken(user._id);
     const { password, ...safeUser } = user.toObject();
 
-    res.status(200).json({ token, user: safeUser });
+    res.status(200).json({ token, user: safeUser, code: 200 });
   },
 ];
