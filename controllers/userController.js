@@ -128,7 +128,7 @@ exports.deactiveLoggedUser = asyncHandler(async (req, res, next) => {
   res.status(204).json({ status: "Success" });
 });
 
-[exports.getFavourites = asyncHandler(async (req, res, next) => {
+exports.getFavourites = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
 
   const user = await userModel
@@ -146,4 +146,3 @@ exports.deactiveLoggedUser = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ data: user.likedAttractions });
 });
-]
