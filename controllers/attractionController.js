@@ -83,7 +83,7 @@ exports.getAttracion = asyncHandler(async (req, res, next) => {
       (id) => id.toString() === attractionId.toString()
     ); // Get last viewed date for this attraction
     const lastViewed = user.lastViewedAttractions?.get(attractionId.toString());
-
+    console.log(isLiked);
     // Get today's date at 00:00
     const today = new Date();
     today.setHours(0, 0, 0, 0);
